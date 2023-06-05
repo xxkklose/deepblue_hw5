@@ -87,6 +87,7 @@ void minimumJerkTrajGen(
     Eigen::MatrixXd M = Eigen::MatrixXd::Zero(dim, dim);
     Eigen::MatrixXd b = Eigen::MatrixXd::Zero(dim, 3);
 
+    ROS_INFO('test');
     Eigen::MatrixXd F0(s, 2 * s);
     Eigen::MatrixXd D0(s, s);
 
