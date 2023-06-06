@@ -81,80 +81,80 @@ void minimumJerkTrajGen(
     // in this function
 
     // ------------------------ Put your solution below ------------------------
-//    using namespace std;
-//    int s = 3; //which means jerk
-//    int dim = pieceNum * 2 * s;
-//    Eigen::MatrixXd M = Eigen::MatrixXd::Zero(dim, dim);
-//    Eigen::MatrixXd b = Eigen::MatrixXd::Zero(dim, 3);
-//
-//    ROS_INFO('test');
-//    Eigen::MatrixXd F0(s, 2 * s);
-//    Eigen::MatrixXd D0(s, s);
-//
-//    F0 << 1, 0, 0, 0, 0, 0, 0,
-//          0, 1, 0, 0, 0, 0, 0,
-//          0, 0, 2, 0, 0, 0, 0;
-//
-//    D0 << initialPos(0), initialPos(1), initialPos(2),
-//          initialVel(0), initialVel(1), initialVel(2),
-//          initialAcc(0), initialAcc(1), initialAcc(2);
-//
-//    M.block(0, 0, s, 2 * s) << F0;
-//    b.block(0, 0, s, 3) << D0;
-//
-//    for (int i = 0; i < pieceNum - 1; ++i) {
-//        double ti = timeAllocationVector(i);
-//        Eigen::MatrixXd Fi(2 * s, 2 * s);
-//        Eigen::MatrixXd Ei(2 * s, 2 * s);
-//        Eigen::MatrixXd Di(1, 3);
-//
-//        Fi << 0, 0, 0, 0, 0, 0,
-//              -1, 0, 0, 0, 0, 0,
-//              0, -1, 0, 0, 0, 0,
-//              0, 0, -2, 0, 0, 0,
-//              0, 0, 0, -6, 0, 0,
-//              0, 0, 0, 0, -24, 0;
-//
-//        Ei << 1, ti, pow(ti, 2), pow(ti, 3), pow(ti, 4), pow(ti, 5),
-//              1, ti, pow(ti, 2), pow(ti, 3), pow(ti, 4), pow(ti, 5),
-//              0, 1, 2 * ti, 3 * pow(ti, 2), 4 * pow(ti, 3), 5 * pow(ti, 4),
-//              0, 0, 2, 6 * ti, 12 * pow(ti, 2), 20 * pow(ti, 3),
-//              0, 0, 0, 6, 24 * ti, 60 * pow(ti, 2),
-//              0, 0, 0, 0, 24, 60 * ti;
-//
-//        Di << intermediatePositions.col(i).transpose();
-//
-//        M.block(2 * s * i + s, 2 * s * i, 2 * s, 2 * s) << Ei;
-//        M.block(2 * s * i + s, 2 * s * (i + 1), 2 * s, 2 * s) << Fi;
-//        b.block(2 * s * i, 0, 1, 3) << Di;
-//    }
-//
-//    Eigen::MatrixXd ET(2 * s, 2 * s);
-//    Eigen::MatrixXd DT(s, 3);
-//
-//    double t_end = timeAllocationVector(pieceNum);
-//
-//    ET <<   1, t_end, pow(t_end, 2), pow(t_end, 3), pow(t_end, 4), pow(t_end, 5),
-//            0, 1, 2 * t_end, 3 * pow(t_end, 2), 4 * pow(t_end, 3), 5 * pow(t_end, 4),
-//            0, 0, 2, 6 * t_end, 12 * pow(t_end, 2), 20 * pow(t_end, 3);
-//
-//    DT << terminalPos(0), terminalPos(1), terminalPos(2),
-//          terminalVel(0), terminalVel(1), terminalVel(2),
-//          terminalAcc(0), terminalAcc(1), terminalAcc(2);
-//
-//    M.block(dim - s, dim - 2 * s, s, 2 * s) << ET;
-//    b.block(dim - s, 3, s, s) << DT;
-//
-//    // Solve Mc = b, using QR solver
-//    clock_t time_stt = clock();
-//    for (int i = 0; i < 3; i++)
-//    {
-//        coefficientMatrix.col(i) = M.colPivHouseholderQr().solve(b.col(i));
-//        // coefficientMatrix.col(i) = M.lu().solve(b.col(i));
-//    }
-//
-//    // std::cout << "C is " << coefficientMatrix << std::endl;
-//    std::cout << "Time cost = " << 1000 * (clock() - time_stt) / (double)CLOCKS_PER_SEC << "ms" << std::endl;
+   using namespace std;
+   int s = 3; //which means jerk
+   int dim = pieceNum * 2 * s;
+   Eigen::MatrixXd M = Eigen::MatrixXd::Zero(dim, dim);
+   Eigen::MatrixXd b = Eigen::MatrixXd::Zero(dim, 3);
+
+   Eigen::MatrixXd F0(s, 2 * s);
+   Eigen::MatrixXd D0(s, s);
+
+   F0 << 1, 0, 0, 0, 0, 0,
+         0, 1, 0, 0, 0, 0,
+         0, 0, 2, 0, 0, 0;
+
+   D0 << initialPos(0), initialPos(1), initialPos(2),
+         initialVel(0), initialVel(1), initialVel(2),
+         initialAcc(0), initialAcc(1), initialAcc(2);
+
+   M.block(0, 0, s, 2 * s) << F0;
+   b.block(0, 0, s, 3) << D0;
+
+   for (int i = 0; i < pieceNum - 1; ++i) {
+       double ti = timeAllocationVector(i);
+       Eigen::MatrixXd Fi(2 * s, 2 * s);
+       Eigen::MatrixXd Ei(2 * s, 2 * s);
+       Eigen::MatrixXd Di(1, 3);
+
+       Fi << 0, 0, 0, 0, 0, 0,
+             -1, 0, 0, 0, 0, 0,
+             0, -1, 0, 0, 0, 0,
+             0, 0, -2, 0, 0, 0,
+             0, 0, 0, -6, 0, 0,
+             0, 0, 0, 0, -24, 0;
+
+       Ei << 1, ti, pow(ti, 2), pow(ti, 3), pow(ti, 4), pow(ti, 5),
+             1, ti, pow(ti, 2), pow(ti, 3), pow(ti, 4), pow(ti, 5),
+             0, 1, 2 * ti, 3 * pow(ti, 2), 4 * pow(ti, 3), 5 * pow(ti, 4),
+             0, 0, 2, 6 * ti, 12 * pow(ti, 2), 20 * pow(ti, 3),
+             0, 0, 0, 6, 24 * ti, 60 * pow(ti, 2),
+             0, 0, 0, 0, 24, 120 * ti;
+
+       Di << intermediatePositions.col(i).transpose();
+
+       M.block(2 * s * i + s, 2 * s * i, 2 * s, 2 * s) << Ei;
+       M.block(2 * s * i + s, 2 * s * (i + 1), 2 * s, 2 * s) << Fi;
+       b.block(2 * s * i + s, 0, 1, 3) << Di;
+   }
+
+   Eigen::MatrixXd ET(s, 2 * s);
+   Eigen::MatrixXd DT(s, 3);
+
+
+   double t_end = timeAllocationVector(pieceNum - 1);
+
+   ET <<   1, t_end, pow(t_end, 2), pow(t_end, 3), pow(t_end, 4), pow(t_end, 5),
+           0, 1, 2 * t_end, 3 * pow(t_end, 2), 4 * pow(t_end, 3), 5 * pow(t_end, 4),
+           0, 0, 2, 6 * t_end, 12 * pow(t_end, 2), 20 * pow(t_end, 3);
+
+   DT << terminalPos(0), terminalPos(1), terminalPos(2),
+         terminalVel(0), terminalVel(1), terminalVel(2),
+         terminalAcc(0), terminalAcc(1), terminalAcc(2);
+
+   M.block(dim - s, dim - 2 * s, s, 2 * s) << ET;
+   b.block(dim - s, 0, s, s) << DT;
+
+   // Solve Mc = b, using QR solver
+   clock_t time_stt = clock();
+   for (int i = 0; i < 3; i++)
+   {
+       coefficientMatrix.col(i) = M.colPivHouseholderQr().solve(b.col(i));
+       // coefficientMatrix.col(i) = M.lu().solve(b.col(i));
+   }
+
+   // std::cout << "C is " << coefficientMatrix << std::endl;
+   std::cout << "Time cost = " << 1000 * (clock() - time_stt) / (double)CLOCKS_PER_SEC << "ms" << std::endl;
 
     // ------------------------ Put your solution above ------------------------
 }
